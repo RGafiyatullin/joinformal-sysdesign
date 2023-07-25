@@ -316,12 +316,14 @@ The **Storage** in this solution remains a critical point. It would make sence t
 ### Observability
 
 Metrics everywhere. Measure the main characteristics of the key events in the system:
+
 * rate of arrival;
 * the distribution of durations: time to handle/response time.
 
 ### Data Storage
 
 Please see the attached tables:
+
 * petfinder-numbers
 * petfinder-stats
 
