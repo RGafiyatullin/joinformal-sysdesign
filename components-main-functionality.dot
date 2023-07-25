@@ -1,0 +1,61 @@
+digraph ComponentsMainFunctionality {
+    // graph [
+    //     label = "Components Diagram"
+    //     labelloc = "t"
+    // ]
+    node [
+        shape=egg
+        fontsize=16
+    ]
+    MobileApp
+
+    node [
+        shape=house
+        fontsize=16
+    ]
+    Storage
+    StorageReplica
+    ColdStorage
+
+    node [
+        shape=oval
+        fontsize=16
+    ]
+    SubmissionBuffer
+
+    node [
+        shape=hexagon
+    ]
+    MediaAssetStorage
+
+    node [
+        shape=rect
+        style=filled
+        fillcolor=gray95
+        fontsize=12
+    ]
+    edge [
+        fontsize=12
+    ]
+
+    MobileApp -> SubmissionAPI [label = "create PetMissing/PetSighted/PetFound"]
+    MobileApp -> SearchAPI [label = "list of PetMissing/PetSighted", style=dashed]
+    MobileApp -> EntityManagementAPI [label = "edit existing own entities"]
+    MobileApp -> MediaAssetStorage [label = "fetch static content", style=dashed]
+
+    SubmissionAPI -> Storage [label = "check submission", style=dashed]
+    SubmissionAPI -> SubmissionBuffer [label = "store submission"]
+    SubmissionAPI -> MediaAssetStorage
+
+    EntityManagementAPI -> Storage [label = "update entries"]
+    
+    IndexerWorker -> SubmissionBuffer [label = "fetch Submission"]
+    IndexerWorker -> Storage [label = "store into index"]
+    
+    Storage -> StorageReplica [label = "replicate the primary storage"]
+    SearchAPI -> StorageReplica [label = "select entries", style=dashed]
+
+    ArchiverWorker -> Storage [label = "fetch oldest partition"]
+    ArchiverWorker -> MediaAssetStorage [label = "remove associated media"]
+    ArchiverWorker -> ColdStorage [label = "store another partition"]
+}
